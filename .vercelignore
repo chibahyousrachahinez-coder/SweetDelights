@@ -1,0 +1,30 @@
+# Vercel
+.vercel
+
+# Local env files
+.env*.local
+.env.development
+.env.test
+
+# Node
+node_modules
+npm-debug.log*
+
+# Build outputs
+.next
+out
+build
+
+# Testing
+coverage
+.nyc_output
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+*.log
+
+# Prisma
+prisma/.env

@@ -1,36 +1,169 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tech Tools Store
+
+A production-grade e-commerce platform for developer hardware, specialized keyboards, productivity gadgets, microcontrollers, and debugging tools.
+
+## Tech Stack
+
+- **Frontend**: Next.js 14 (App Router), Tailwind CSS, TypeScript, Shadcn/ui
+- **Backend**: Next.js API Routes with TypeScript
+- **Database**: PostgreSQL with Prisma ORM
+- **Caching**: Redis for cart session storage
+- **Payments**: Stripe Checkout API with secure webhook handling
+- **Deployment**: Vercel (Frontend) + Render/Railway (Database)
+
+## Features
+
+- Server-Side Rendering (SSR) for product listings
+- Incremental Static Regeneration (ISR) for product detail pages
+- Guest checkout (no mandatory registration)
+- Secure payment processing via Stripe
+- Inventory management with row-level locking
+- Automatic stock restoration on abandoned checkouts
+- Responsive, modern UI with dark mode support
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- PostgreSQL database
+- Redis instance (optional, for cart persistence)
+- Stripe account (for payments)
+
+### Installation
+
+1. Clone the repository and install dependencies:
+
+```bash
+cd tech-tools-store
+npm install
+```
+
+2. Copy the environment file and configure your variables:
+
+```bash
+cp .env.example .env
+```
+
+3. Update `.env` with your credentials:
+
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/techtools"
+REDIS_URL="redis://localhost:6379"
+STRIPE_SECRET_KEY="sk_test_xxxxx"
+STRIPE_PUBLISHABLE_KEY="pk_test_xxxxx"
+STRIPE_WEBHOOK_SECRET="whsec_xxxxx"
+NEXT_PUBLIC_URL="http://localhost:3000"
+```
+
+4. Generate Prisma client and push the schema:
+
+```bash
+npm run db:generate
+npm run db:push
+```
+
+5. Seed the database with sample products:
+
+```bash
+npm run db:seed
+```
+
+6. Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Stripe Integration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Setting Up Stripe CLI for Local Testing
 
-## Learn More
+1. Install Stripe CLI:
+   - Windows: `scoop install stripe`
+   - macOS: `brew install stripe/stripe-cli/stripe`
 
-To learn more about Next.js, take a look at the following resources:
+2. Login to Stripe:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+stripe login
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. Forward webhooks to your local server:
 
-## Deploy on Vercel
+```bash
+npm run stripe:listen
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. Copy the webhook signing secret (`whsec_...`) to your `.env` file.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. Test webhook events:
+
+```bash
+stripe trigger checkout.session.completed
+stripe trigger checkout.session.expired
+```
+
+## Project Structure
+
+```
+tech-tools-store/
+├── prisma/
+│   ├── schema.prisma       # Database schema
+│   └── seed.ts             # Seed script
+├── src/
+│   ├── app/
+│   │   ├── (shop)/         # Public shopping routes
+│   │   ├── api/            # API routes
+│   │   └── checkout/       # Checkout flow
+│   ├── components/         # React components
+│   └── lib/                # Utility libraries
+└── public/
+    └── videos/             # Loading video assets
+```
+
+## Loading Video Setup
+
+Download the network animation video from [Pixabay](https://pixabay.com/videos/connection-global-graphic-network-113368/) and place it at:
+
+```
+public/videos/network-intro.mp4
+```
+
+## Database Schema
+
+The platform uses the following data models:
+
+- **User**: Customer accounts with authentication
+- **Category**: Product categories (keyboards, microcontrollers, etc.)
+- **Product**: Items with specs, pricing, and inventory
+- **Order**: Purchase records with status tracking
+- **OrderItem**: Line items linking orders to products
+
+## Security Features
+
+1. **Price Verification**: Server-side validation of product prices
+2. **Webhook Signature**: Cryptographic verification of Stripe webhooks
+3. **No Card Storage**: All payment data handled by Stripe
+4. **Inventory Locking**: PostgreSQL transactions prevent overselling
+5. **Session Expiry**: Automatic stock restoration after 30 minutes
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm run start` | Start production server |
+| `npm run db:generate` | Generate Prisma client |
+| `npm run db:push` | Push schema to database |
+| `npm run db:migrate` | Run migrations |
+| `npm run db:seed` | Seed sample data |
+| `npm run db:studio` | Open Prisma Studio |
+| `npm run stripe:listen` | Forward Stripe webhooks |
+
+## License
+
+MIT
