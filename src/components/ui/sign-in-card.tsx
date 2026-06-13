@@ -78,7 +78,7 @@ export function SignInCard() {
           setTimeout(() => router.push('/'), 1500);
         }
       }
-    } catch (error) {
+    } catch {
       setError('Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
@@ -93,7 +93,7 @@ export function SignInCard() {
         callbackUrl: '/',
         redirect: true 
       });
-    } catch (error) {
+    } catch {
       setError('Failed to sign in with Google. Please try again.');
       setIsGoogleLoading(false);
     }

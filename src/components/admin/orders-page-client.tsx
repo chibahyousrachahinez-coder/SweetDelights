@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Filter, ChevronDown, Eye, Loader2 } from 'lucide-react';
+import { Filter, ChevronDown, Loader2 } from 'lucide-react';
 import { updateOrderStatus } from '@/app/actions/orders';
 import { useRouter } from 'next/navigation';
 

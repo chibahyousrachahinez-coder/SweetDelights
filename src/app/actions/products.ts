@@ -32,6 +32,7 @@ async function checkAdminAccess() {
 
 export async function getProducts(filter?: { categoryId?: string; search?: string }) {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const where: any = {};
 
     if (filter?.categoryId) {

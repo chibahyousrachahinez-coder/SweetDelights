@@ -55,7 +55,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       if (!user.email) return false;
       
       // For OAuth sign-ins, ensure user exists in database
@@ -90,7 +90,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
       
       return true;
     },
-    async jwt({ token, user, account, trigger }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.id = user.id;
         token.role = user.role;

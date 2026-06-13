@@ -34,7 +34,7 @@ async function getDashboardStats() {
     const totalProductsSold = completedOrders.reduce(
       (sum, order) => {
         const orderQuantity = order.items.reduce(
-          (qtySum: number, item: any) => qtySum + item.quantity, 
+          (qtySum: number, item) => qtySum + item.quantity, 
           0
         );
         return sum + orderQuantity;
@@ -46,7 +46,7 @@ async function getDashboardStats() {
     const totalCost = completedOrders.reduce(
       (sum, order) => {
         const orderCost = order.items.reduce(
-          (costSum: number, item: any) => costSum + ((item.product.costPrice || 0) * item.quantity),
+          (costSum: number, item) => costSum + ((item.product.costPrice || 0) * item.quantity),
           0
         );
         return sum + orderCost;
@@ -108,7 +108,7 @@ export default async function AdminDashboardPage() {
           Dashboard Overview
         </h1>
         <p className="text-muted-foreground">
-          Welcome back! Here's what's happening with your store.
+          Welcome back! Here&apos;s what&apos;s happening with your store.
         </p>
       </div>
 

@@ -79,7 +79,7 @@ export function ProductDialog({ isOpen, onClose, product }: ProductDialogProps) 
       } else {
         setError(result.error || 'Something went wrong');
       }
-    } catch (err) {
+    } catch {
       setError('Failed to save product');
     } finally {
       setIsLoading(false);

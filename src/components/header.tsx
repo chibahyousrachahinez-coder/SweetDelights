@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { HeaderClient } from './header-client';
 import { getCurrentUser } from '@/app/actions/auth';
 

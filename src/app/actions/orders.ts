@@ -2,7 +2,6 @@
 
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import { getCurrentUser } from './auth';
 
 interface OrderItemInput {
@@ -96,6 +95,7 @@ export async function getOrders(status?: string) {
     }
 
     // Only admins can view all orders
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const where: any = user.role === 'ADMIN' ? {} : { userId: user.id };
     
     if (status && status !== 'ALL') {
@@ -174,6 +174,7 @@ export async function updateOrderStatus(orderId: string, status: string) {
 
     await prisma.order.update({
       where: { id: orderId },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: { status: status as any },
     });
 

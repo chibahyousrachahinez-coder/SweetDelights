@@ -34,7 +34,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-white/70 max-w-sm leading-relaxed">
-              Crafting moments of sweetness since 2010. Every cake tells a story, and we're here to make yours unforgettable.
+              Crafting moments of sweetness since 2010. Every cake tells a story, and we&apos;re here to make yours unforgettable.
             </p>
             <div className="space-y-3">
               <div className="flex items-center gap-3 text-white/70">

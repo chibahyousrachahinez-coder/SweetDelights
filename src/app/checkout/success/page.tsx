@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import confetti from 'canvas-confetti';
 
 export default function CheckoutSuccessPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');
   const orderNumber = searchParams.get('orderNumber');
@@ -81,7 +80,7 @@ export default function CheckoutSuccessPage() {
               Order Confirmed! 🎉
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
-              Thank you for your order! We're preparing your delicious treats with love.
+              Thank you for your order! We&apos;re preparing your delicious treats with love.
             </p>
 
             {/* Order Details */}
@@ -119,7 +118,7 @@ export default function CheckoutSuccessPage() {
                   <div>
                     <p className="font-semibold text-sm">Order Confirmation Email</p>
                     <p className="text-xs text-muted-foreground">
-                      We've sent a confirmation to your email with all the details.
+                      We&apos;ve sent a confirmation to your email with all the details.
                     </p>
                   </div>
                 </div>

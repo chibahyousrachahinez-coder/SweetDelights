@@ -7,7 +7,6 @@ import { ShoppingBag, MapPin, User, Mail, Phone, ArrowLeft, CheckCircle } from '
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCartStore } from '@/store/cart-store';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { createOrder } from '@/app/actions/orders';
 
@@ -72,6 +71,7 @@ export default function CheckoutPage() {
 
       // Map cart items to order items with real product IDs
       const orderItems = items.map((item) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const dbProduct = dbProducts.find((p: any) => p.slug === item.slug);
         if (!dbProduct) {
           throw new Error(`Product ${item.name} not found in database`);
@@ -109,9 +109,10 @@ export default function CheckoutPage() {
         setError(result.error || 'Failed to create order. Please try again.');
         setIsProcessing(false);
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Checkout error:', error);
-      setError(error.message || 'Something went wrong. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'Something went wrong. Please try again.';
+      setError(errorMessage);
       setIsProcessing(false);
     }
   };

@@ -10,6 +10,7 @@ export async function POST(req: NextRequest) {
     const { items, customerInfo } = await req.json();
 
     // Create line items for Stripe
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const lineItems = items.map((item: any) => ({
       price_data: {
         currency: 'usd',
@@ -23,6 +24,7 @@ export async function POST(req: NextRequest) {
     }));
 
     // Calculate shipping
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const subtotal = items.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
     const shipping = subtotal >= 5000 ? 0 : 500; // Free shipping over $50
 
@@ -73,10 +75,11 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ url: session.url });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Stripe checkout error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to create checkout session';
     return NextResponse.json(
-      { error: error.message || 'Failed to create checkout session' },
+      { error: errorMessage },
       { status: 500 }
     );
   }
