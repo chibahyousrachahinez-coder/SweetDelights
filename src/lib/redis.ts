@@ -14,8 +14,11 @@ function createRedisClient() {
 
   return new Redis(redisUrl, {
     maxRetriesPerRequest: 3,
-    retryDelayOnFailover: 100,
     lazyConnect: true,
+    retryStrategy(times) {
+      const delay = Math.min(times * 50, 2000);
+      return delay;
+    },
   });
 }
 

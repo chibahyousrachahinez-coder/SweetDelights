@@ -11,14 +11,15 @@ interface Order {
   totalAmount: number;
   status: string;
   createdAt: Date;
+  guestEmail?: string | null;
   user: {
     email: string;
     name?: string | null;
-  };
-  orderItems: Array<{
+  } | null;
+  items: Array<{
     id: string;
     quantity: number;
-    price: number;
+    unitPrice: number;
     product: {
       name: string;
     };
@@ -132,7 +133,7 @@ export function OrdersPageClient({ initialOrders }: OrdersPageClientProps) {
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">Customer</p>
                     <p className="font-medium text-foreground">
-                      {order.user.name || order.user.email}
+                      {order.user?.name || order.user?.email || order.guestEmail || 'Guest'}
                     </p>
                   </div>
                   <div>
@@ -190,7 +191,7 @@ export function OrdersPageClient({ initialOrders }: OrdersPageClientProps) {
                 >
                   <h3 className="font-medium text-foreground mb-3">Order Items</h3>
                   <div className="space-y-2">
-                    {order.orderItems.map((item) => (
+                    {order.items.map((item) => (
                       <div
                         key={item.id}
                         className="flex items-center justify-between p-3 bg-white rounded-lg"
@@ -202,7 +203,7 @@ export function OrdersPageClient({ initialOrders }: OrdersPageClientProps) {
                           </p>
                         </div>
                         <p className="font-medium text-foreground">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          ${(item.unitPrice * item.quantity).toFixed(2)}
                         </p>
                       </div>
                     ))}
